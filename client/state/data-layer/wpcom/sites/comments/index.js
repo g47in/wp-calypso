@@ -205,10 +205,10 @@ const announceFailure = ( { dispatch, getState }, { query: { siteId } } ) => {
 };
 
 const editComment = ( { dispatch, getState }, action ) => {
-	const { siteId, commentId, commentData } = action;
-	const originalCommentData = pick(
+	const { siteId, commentId, comment } = action;
+	const originalComment = pick(
 		getSiteComment( getState(), action.siteId, action.commentId ),
-		keys( commentData )
+		keys( comment )
 	);
 
 	dispatch(
@@ -217,11 +217,11 @@ const editComment = ( { dispatch, getState }, action ) => {
 				method: 'POST',
 				path: `/sites/${ siteId }/comments/${ commentId }`,
 				apiVersion: '1.1',
-				body: commentData,
+				body: comment,
 			},
 			{
 				...action,
-				originalCommentData,
+				originalComment,
 			}
 		)
 	);
@@ -230,8 +230,8 @@ const editComment = ( { dispatch, getState }, action ) => {
 const announceEditFailure = ( { dispatch, getState }, action ) => {
 	dispatch(
 		local( {
-			...omit( action, [ 'originalCommentData' ] ),
-			commentData: action.originalCommentData,
+			...omit( action, [ 'originalComment' ] ),
+			comment: action.originalComment,
 		} )
 	);
 	dispatch( removeNotice( `comment-notice-${ action.commentId }` ) );
