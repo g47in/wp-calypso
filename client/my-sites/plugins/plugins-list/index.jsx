@@ -164,8 +164,8 @@ export const PluginsList = React.createClass( {
 		}
 	},
 
-	hasNoSitesThatCanManage( plugin ) {
-		return ! plugin.sites.some( site => includes( site.modules || [], 'manage' ) );
+	hasNoSitesThatCanManage() {
+		return false;
 	},
 
 	getSelected() {
