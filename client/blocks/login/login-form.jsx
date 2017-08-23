@@ -6,6 +6,7 @@ import { defer } from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
+import qs from 'qs';
 
 /**
  * Internal dependencies
@@ -152,9 +153,14 @@ export class LoginForm extends Component {
 			isDisabled.disabled = true;
 		}
 
-		const { requestError } = this.props;
+		const { requestError, redirectTo, oauth2ClientData } = this.props;
 		const linkingSocialUser = this.props.socialAccountIsLinking;
-		const isOauthLogin = !! this.props.oauth2ClientData;
+		const isOauthLogin = !! oauth2ClientData;
+		let signupUrl = config( 'signup_url' );
+
+		if ( isOauthLogin ) {
+			signupUrl = '/start/wpcc?' + qs.stringify( { oauth2_client_id: oauth2ClientData.id, oauth2_redirect: redirectTo } );
+		}
 
 		return (
 			<form onSubmit={ this.onSubmitForm } method="post">
@@ -263,7 +269,7 @@ export class LoginForm extends Component {
 							{ this.props.translate( 'Not on WordPress.com? {{signupLink}}Create an Account{{/signupLink}}.',
 								{
 									components: {
-										signupLink: <a href={ config( 'signup_url' ) } />,
+										signupLink: <a href={ signupUrl } />,
 									}
 								}
 							) }
