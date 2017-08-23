@@ -155,13 +155,14 @@ export class MySitesSidebar extends Component {
 		}
 
 		const { site, isPreviewable } = this.props;
+		const siteUrl = site && site.URL || '';
 
 		return (
 			<SidebarItem
 				tipTarget="sitePreview"
 				label={ this.props.translate( 'View Site' ) }
 				className={ this.itemLinkClass( [ '/view' ], 'preview' ) }
-				link={ isPreviewable ? '/view' + this.props.siteSuffix : site.URL }
+				link={ isPreviewable ? '/view' + this.props.siteSuffix : siteUrl }
 				onNavigate={ this.onNavigate }
 				icon="computer"
 				preloadSectionName="preview"
@@ -252,7 +253,7 @@ export class MySitesSidebar extends Component {
 		return (
 			<SidebarItem
 				label={ this.props.translate( 'Plugins' ) }
-				className={ this.itemLinkClass( '/plugins', 'plugins' ) }
+				className={ this.itemLinkClass( [ '/extensions', '/plugins' ], 'plugins' ) }
 				link={ pluginsLink }
 				onNavigate={ this.onNavigate }
 				icon="plugins"
